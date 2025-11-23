@@ -1,0 +1,12 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box
+}
+
+:root {
+  --neon-green: #39ff14;
+  --dark-bg: #050505;
+  --glass-bg: rgba(10, 20, 10, 0.85);
+  --border-color: rgba(57, 255, 20, 0.3);
+}
