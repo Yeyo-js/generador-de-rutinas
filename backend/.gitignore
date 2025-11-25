@@ -1,1 +1,5 @@
-node_modules
+# Ignorar secretos y configuraciones locales
+.env
+
+# Ignorar la carpeta gigante de librerías (¡Nunca se sube!)
+node_modules/

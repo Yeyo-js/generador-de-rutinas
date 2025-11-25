@@ -1,0 +1,136 @@
+.tarjeta-estadisticas{
+  width: 340px;
+  height: 500px;
+  perspective: 1000px;
+}
+
+.card{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--glass-bg);
+  border-radius: 20px;
+  border: 1px solid var(--neon-green);
+  transform-style: preserve-3d;
+  box-shadow: 
+      0 0 25px rgba(57, 255, 20, 0.15), 
+      inset 0 0 30px rgba(57, 255, 20, 0.05);
+  cursor: pointer;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(135deg, transparent 40%, rgba(57, 255, 20, 0.1));
+  transform: translateZ(0px);
+  pointer-events: none;
+}
+
+.circle-bg{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(20px);
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(57, 255, 20, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: translateZ(60px);
+  padding: 20px;
+}
+
+.icon-box {
+  margin-bottom: 30px;
+  color: var(--neon-green);
+  filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.6));
+  border: 2px solid var(--neon-green);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+  background: rgba(0,0,0,0.3);
+}
+
+.text-stats {
+  font-size: 1.1rem;
+  color: #ddd;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  opacity: 0.9;
+}
+
+.stat-number {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--neon-green);
+  text-shadow: 0 0 20px rgba(var(--neon-green), 0.8);
+  margin-bottom: 25px;
+}
+
+.divider {
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+  margin-bottom: 25px;
+  opacity: 0.5;
+}
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: rgba(57, 255, 20, 0.5);
+  box-shadow: 0 0 10px var(--neon-green);
+  animation: scan 3s linear infinite;
+  opacity: 0.3;
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* 📱 RESPONSIVE DESIGN (Móviles) */
+@media (max-width: 400px) {
+  .tarjeta-estadisticas {
+    width: 100%; 
+    height: 400px;
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
+  }
+  
+  .icon-box {
+    width: 60px; height: 60px;
+    margin-bottom: 20px;
+  }
+}
