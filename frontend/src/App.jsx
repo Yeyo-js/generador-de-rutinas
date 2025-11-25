@@ -3,26 +3,32 @@ import {
   Activity,
   AlertCircle,
   BarChart2,
+  ChevronRight,
   Clock,
   Cpu,
+  GraduationCap,
   Terminal,
   Zap,
 } from "lucide-react";
 import { useEffect } from "react";
 import "./App.css";
+import MarkdownRenderer from "./components/atoms/MarkdownRenderer";
+import RoutineModal from "./components/organisms/RoutineModal";
 
 function App() {
   const [materia, setMateria] = useState("");
   const [tiempo, setTiempo] = useState("");
   const [rutinaGenerada, setRutinaGenerada] = useState("");
   const [historial, setHistorial] = useState([]);
-  const [dificultad, setDificultad] = useState("media");
+  const [dificultad, setDificultad] = useState("medio");
   const [estadisticas, setEstadisticas] = useState({
     totalRutinas: 0,
     totalMinutos: 0,
   });
 
   const [loading, setLoading] = useState(false);
+  const [rutinaSeleccionada, setRutinaSeleccionada] = useState(null);
+  const [nivel, setNivel] = useState("instituto");
 
   const obtenerHistorial = useCallback(async () => {
     try {
@@ -59,24 +65,44 @@ function App() {
       const respuesta = await fetch("http://localhost:3000/api/recommend", {
         method: "POST",
         headers: {
-          "content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           materia: materia,
           tiempo: tiempo,
           dificultad: dificultad,
+          nivel: nivel,
         }),
       });
 
-      const data = await respuesta.json();
+      const textoRespuesta = await respuesta.text();
 
-      setRutinaGenerada(data.rutinaSugerida);
+      try {
+        const data = JSON.parse(textoRespuesta);
 
-      obtenerHistorial();
-      obtenerEstadisticas();
+        if (!respuesta.ok) {
+          setRutinaGenerada(data.error || "Error desconocido del servidor.");
+        } else {
+          setRutinaGenerada(data.rutinaSugerida);
+          obtenerHistorial();
+          obtenerEstadisticas();
+        }
+      } catch (jsonError) {
+        console.error(
+          "El servidor no devolvió JSON:",
+          jsonError,
+          textoRespuesta
+        );
+
+        setRutinaGenerada(
+          `Error crítico: El servidor devolvió algo inesperado. Revisa la consola. (Status: ${respuesta.status})`
+        );
+      }
     } catch (error) {
-      console.error("error la conectar con el backend", error);
-      setRutinaGenerada("Error al generar la rutina");
+      console.error("Error al conectar con el backend:", error);
+      setRutinaGenerada(
+        "Error de conexión. Verifica que el backend esté corriendo."
+      );
     }
   };
 
@@ -105,6 +131,16 @@ function App() {
       cardRef.current.style.transition = "transform 0.5s ease";
       cardRef.current.style.transform = "rotateY(0deg) rotateX(0deg)";
     }
+  };
+
+  const eliminarRutina = async (id) => {
+    const nuevoHistorial = historial.filter((item) => item.id !== id);
+    setHistorial(nuevoHistorial);
+    setRutinaSeleccionada(null);
+
+    await fetch(`http://localhost:3000/api/history/${id}`, {
+      method: "DELETE",
+    });
   };
 
   return (
@@ -180,6 +216,26 @@ function App() {
               />
             </div>
 
+            {/* NIVEL ACADÉMICO */}
+            <div className="input-group">
+              <label>
+                <GraduationCap size={16} color="#39ff14" />
+                NIVEL ACADÉMICO
+              </label>
+              <div className="select-wrapper">
+                <select
+                  className="input"
+                  value={nivel}
+                  onChange={(e) => setNivel(e.target.value)}
+                >
+                  <option value="primaria">Primaria (Básico/Niños)</option>
+                  <option value="secundaria">Secundaria (Adolescentes)</option>
+                  <option value="instituto">Instituto / Técnico</option>
+                  <option value="universidad">Universidad / Posgrado</option>
+                </select>
+              </div>
+            </div>
+
             <div className="input-group">
               <label>
                 <BarChart2 size={16} color="#39ff14" />
@@ -221,7 +277,7 @@ function App() {
             <div className="result-header">
               <span>RESULTADO DEL SISTEMA</span>
             </div>
-            <p className="typewriter-text">{rutinaGenerada}</p>
+            <MarkdownRenderer content={rutinaGenerada} />
           </div>
         )}
 
@@ -244,7 +300,7 @@ function App() {
                 <p>SISTEMA EN ESPERA... NO HAY DATOS.</p>
               </div>
             ) : (
-              historial.map((item, index) => {
+              historial.map((item, index) => (
                 <div
                   key={item.id}
                   className="history-card-modern"
@@ -277,16 +333,24 @@ function App() {
                   </div>
 
                   <div className="h-card-footer">
-                    <button className="h-action-btn">
+                    <button
+                      className="h-action-btn"
+                      onClick={() => setRutinaSeleccionada(item)}
+                    >
                       VER DETALLES <ChevronRight size={14} />
                     </button>
                   </div>
-                </div>;
-              })
+                </div>
+              ))
             )}
           </div>
         </div>
       </div>
+      <RoutineModal
+        routine={rutinaSeleccionada}
+        onClose={() => setRutinaSeleccionada(null)}
+        onDelete={eliminarRutina}
+      />
     </>
   );
 }

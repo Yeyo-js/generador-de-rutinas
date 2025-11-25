@@ -1,0 +1,45 @@
+/* Contenedor principal */
+.markdown-container {
+  font-family: 'Courier New', monospace; /* Mantenemos el estilo hacker */
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #e0e0e0;
+  text-align: left;
+}
+
+/* Títulos (## Título) */
+.markdown-container h1, 
+.markdown-container h2, 
+.markdown-container h3 {
+  color: var(--neon-green);
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  border-bottom: 1px dashed rgba(57, 255, 20, 0.3);
+  padding-bottom: 5px;
+}
+
+/* Negritas (**Texto**) */
+.markdown-container strong {
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+}
+
+/* Listas (- Item) */
+.markdown-container ul, 
+.markdown-container ol {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.markdown-container li {
+  margin-bottom: 8px;
+}
+
+/* Párrafos */
+.markdown-container p {
+  margin-bottom: 15px;
+}

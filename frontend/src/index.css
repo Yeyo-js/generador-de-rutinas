@@ -6,7 +6,10 @@
 
 :root {
   --neon-green: #39ff14;
+  --neon-blue: #00f3ff;
+  --neon-red: #ff0055;
   --dark-bg: #050505;
   --glass-bg: rgba(10, 20, 10, 0.85);
+  --card-bg: rgba(5, 10, 5, 0.8);
   --border-color: rgba(57, 255, 20, 0.3);
 }
