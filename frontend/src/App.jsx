@@ -4,8 +4,9 @@ import MarkdownRenderer from "./components/atoms/MarkdownRenderer";
 import RoutineModal from "./components/organisms/RoutineModal";
 import { StatsCard } from "./components/molecules/StatsCard";
 import { RoutineForm } from "./components/organisms/RoutineForm";
-import "./App.css";
 import { HistoryList } from "./components/organisms/HistoryList";
+import { API_URL } from "./config/api"
+import "./App.css";
 
 function App() {
   const [rutinaGenerada, setRutinaGenerada] = useState("");
@@ -20,7 +21,7 @@ function App() {
 
   const obtenerHistorial = useCallback(async () => {
     try {
-      const respuesta = await fetch("http://localhost:3000/api/history");
+      const respuesta = await fetch(`${API_URL}/api/history`);
       const datos = await respuesta.json();
 
       setHistorial(datos);
@@ -31,7 +32,7 @@ function App() {
 
   const obtenerEstadisticas = useCallback(async () => {
     try {
-      const respuesta = await fetch("http://localhost:3000/api/stats");
+      const respuesta = await fetch(`${API_URL}/api/stats`);
       const datos = await respuesta.json();
       setEstadisticas(datos);
     } catch (error) {
@@ -49,7 +50,7 @@ function App() {
     setRutinaGenerada("Generando...");
 
     try {
-      const respuesta = await fetch("http://localhost:3000/api/recommend", {
+      const respuesta = await fetch(`${API_URL}/api/recommend`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
