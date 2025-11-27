@@ -19,5 +19,8 @@
   },
   "devDependencies": {
     "nodemon": "3.1.11"
+  },
+  "eslintConfig": {
+    "extends": ".node_modules/standard/eslintrc.json"
   }
 }
