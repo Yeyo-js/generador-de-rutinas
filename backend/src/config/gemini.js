@@ -11,7 +11,6 @@ if (!process.env.GEMINI_API_KEY) {
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Usamos el modelo que te funcionó (puedes cambiarlo si Google lanza uno nuevo)
 export const model = genAI.getGenerativeModel({
   model: "gemini-2.5-flash-preview-09-2025",
 });
